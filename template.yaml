@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Task App
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  ListTasksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list_tasks
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      Policies:
+        DynamoDBCrudPolicy:
+          TableName:
+            Ref: TasksTable
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /tasks
+            Method: get
+    Metadata:
+      SamResourceId: list_tasks
+  TasksTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Tasks
+Outputs:
+  Api:
+    Description: API Gateway endpoint URL
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/tasks
