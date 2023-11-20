@@ -31,8 +31,6 @@ Resources:
           Properties:
             Path: /tasks
             Method: get
-    Metadata:
-      SamResourceId: list_tasks
 
 Outputs:
   Api:
