@@ -9,8 +9,6 @@ Globals:
 Resources:
   TaskTable:
     Type: AWS::Serverless::SimpleTable
-    Properties:
-      TableName: Tasks
 
   ListTasksFunction:
     Type: AWS::Serverless::Function
