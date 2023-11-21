@@ -31,6 +31,9 @@ Resources:
           Properties:
             Path: /tasks
             Method: get
+      Environment:
+        Variables:
+          TASK_TABLE_NAME: !Ref TaskTable
 
 Outputs:
   Api:
