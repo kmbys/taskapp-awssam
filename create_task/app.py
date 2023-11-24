@@ -8,17 +8,19 @@ dynamodb_client = boto3.client('dynamodb')
 def lambda_handler(event, context):
     table_name = os.environ['TABLE_NAME']
 
-    id = str(uuid.uuid4())
-
     body = json.loads(event['body'])
+
+    task = {
+        'id': { 'S': str(uuid.uuid4()) },
+        'title': { 'S': body['title'] },
+    }
+    description = body.get('description')
+    if description is not None:
+        task['description'] = description
 
     dynamodb_client.put_item(
         TableName=table_name,
-        Item={
-            'id': { 'S': id },
-            'title': { 'S': body['title'] },
-            'description': { 'S': body['description'] },
-        }
+        Item=task,
     )
 
     return {
