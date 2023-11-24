@@ -8,7 +8,7 @@ def app():
 
 @pytest.fixture
 def mock_os_environ(mocker):
-    mocker.patch.dict('os.environ', {'TASK_TABLE_NAME': 'xxx-xxx-TaskTable-xxxx'})
+    mocker.patch.dict('os.environ', {'TABLE_NAME': 'xxx-xxx-TaskTable-xxxx'})
 
 @pytest.fixture
 def mock_boto3_client(mocker):
