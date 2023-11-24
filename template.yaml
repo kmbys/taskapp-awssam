@@ -35,6 +35,31 @@ Resources:
         Variables:
           TABLE_NAME: !Ref Table
 
+  CreateTaskFunction:
+    Type: AWS::Serverless::Function
+    Connectors:
+      TableConnector:
+        Properties:
+          Destination:
+            Id: Table
+          Permissions:
+            - Write
+    Properties:
+      CodeUri: create_task
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /tasks
+            Method: post
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Table
+
 Outputs:
   Api:
     Description: API Gateway endpoint URL
