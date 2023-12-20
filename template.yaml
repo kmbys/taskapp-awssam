@@ -138,3 +138,5 @@ Outputs:
       Fn::Sub: https://${Api}.execute-api.${AWS::Region}.amazonaws.com/prod/tasks
   FrontendUrl:
     Value: !GetAtt Distribution.DomainName
+  FrontendBucketName:
+    Value: !Ref FrontendBucket
