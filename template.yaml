@@ -133,7 +133,8 @@ Resources:
                       - !Ref Distribution
 
 Outputs:
-  Api:
-    Description: API Gateway endpoint URL
+  ApiEndpointUrl:
     Value:
       Fn::Sub: https://${Api}.execute-api.${AWS::Region}.amazonaws.com/prod/tasks
+  FrontendUrl:
+    Value: !GetAtt Distribution.DomainName
