@@ -12,6 +12,11 @@ Resources:
   Table:
     Type: AWS::Serverless::SimpleTable
 
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+
   ListTasksFunction:
     Type: AWS::Serverless::Function
     Connectors:
@@ -33,6 +38,8 @@ Resources:
           Properties:
             Path: /tasks
             Method: get
+            RestApiId:
+              Ref: Api
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
@@ -58,6 +65,8 @@ Resources:
           Properties:
             Path: /tasks
             Method: post
+            RestApiId:
+              Ref: Api
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
@@ -127,4 +136,4 @@ Outputs:
   Api:
     Description: API Gateway endpoint URL
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/tasks
+      Fn::Sub: https://${Api}.execute-api.${AWS::Region}.amazonaws.com/prod/tasks
