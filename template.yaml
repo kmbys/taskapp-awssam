@@ -15,7 +15,7 @@ Resources:
   Api:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: prod
+      StageName: Prod
 
   ListTasksFunction:
     Type: AWS::Serverless::Function
@@ -94,7 +94,26 @@ Resources:
             OriginAccessControlId: !GetAtt FrontendOac.Id
             S3OriginConfig:
               OriginAccessIdentity: ''
-        DefaultRootObject: index.html
+          - DomainName: !Sub '${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+            Id: !Sub '${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols:
+                - TLSv1.2
+        CacheBehaviors:
+          - TargetOriginId: !Sub '${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+            PathPattern: Prod/*
+            Compress: true
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            ViewerProtocolPolicy: redirect-to-https
         DefaultCacheBehavior:
           TargetOriginId: !GetAtt FrontendBucket.DomainName
           AllowedMethods:
@@ -103,12 +122,13 @@ Resources:
           CachedMethods:
             - GET
             - HEAD
-          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
           ViewerProtocolPolicy: redirect-to-https
           ForwardedValues:
             QueryString: false
             Cookies:
               Forward: none
+        DefaultRootObject: index.html
 
   FrontendBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -135,7 +155,7 @@ Resources:
 Outputs:
   ApiEndpointUrl:
     Value:
-      Fn::Sub: https://${Api}.execute-api.${AWS::Region}.amazonaws.com/prod/tasks
+      Fn::Sub: https://${Api}.execute-api.${AWS::Region}.amazonaws.com/Prod/tasks
   FrontendUrl:
     Value: !GetAtt Distribution.DomainName
   FrontendBucketName:

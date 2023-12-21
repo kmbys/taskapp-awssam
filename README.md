@@ -32,8 +32,14 @@ CloudFormation stack is created with deploy command.
 ```
 sam deploy --guided
 ```
+Then, upload static files to FrontendBucket.
+```
+aws s3 sync public s3://{FrontendBucketName value}/ --include "*"
+```
 
 # Clean
+Delete objects in FrontendBucket.
+
 CloudFormation stack is deleted with delete command.
 ```
 sam delete
