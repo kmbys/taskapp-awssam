@@ -1,10 +1,10 @@
 function show_tasks() {
     const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', function() {
+        console.log(this.responseText);
+        document.getElementById("tasks").textContent = this.responseText;
+    })
     xhr.open('GET', '/Prod/tasks');
-    xhr.responseType = 'text';
-    xhr.onload = () => {
-        document.getElementById("tasks").value = this.response;
-    }
     xhr.send();
 }
 
